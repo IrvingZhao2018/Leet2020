@@ -14,16 +14,39 @@ class Solution {
         builder.prettyPrintTree(root);
 
         System.out.println(solution.preorderTraversalMorris(root));
+        System.out.println(solution.preorderTraversalIterative(root));
+    }
+
+
+    public List<Integer> preorderTraversalIterative(TreeNode root) {
+        LinkedList<TreeNode> stack = new LinkedList<>();
+        LinkedList<Integer> output = new LinkedList<>();
+        if (root == null) {
+            return output;
+        }
+
+        stack.add(root);
+        while (!stack.isEmpty()) {
+            TreeNode node = stack.pollLast();
+            output.add(node.val);
+            if (node.right != null) {
+                stack.add(node.right);
+            }
+            if (node.left != null) {
+                stack.add(node.left);
+            }
+        }
+        return output;
     }
 
     /*
-    * Time complexity :
-    * we visit each predecessor exactly twice descending down from the node,
-    * thus the time complexity is O(N), where NN is the number of nodes, i.e. the size of tree.
-    *
-    * Space complexity :
-    * we use no additional memory for the computation itself,
-    * but output list contains NN elements, and thus space complexity is O(N).*/
+     * Time complexity :
+     * we visit each predecessor exactly twice descending down from the node,
+     * thus the time complexity is O(N), where NN is the number of nodes, i.e. the size of tree.
+     *
+     * Space complexity :
+     * we use no additional memory for the computation itself,
+     * but output list contains NN elements, and thus space complexity is O(N).*/
     public List<Integer> preorderTraversalMorris(TreeNode root) {
         LinkedList<Integer> output = new LinkedList<>();
 
