@@ -8,29 +8,31 @@ public class Solution {
         String beginWord = "hit";
         String endWord = "cog";
         List<String> wordList = Arrays.asList("hot", "dot", "dog", "lot", "log", "cog");
-        System.out.println(solution.findLadders(beginWord, endWord, wordList));
+        List<String> wordList2 = Arrays.asList("hot", "dot", "dog", "lot", "log");
+        System.out.println(solution.findLadders(beginWord, endWord, wordList2));
     }
 
     public List<List<String>> findLadders(String start, String end, List<String> wordList) {
+        List<List<String>> res = new ArrayList<List<String>>();
         Set<String> dict = new HashSet<>(wordList);
-
+        if(!dict.contains(end)) return res;
         // hash set for both ends
-        Set<String> set1 = new HashSet<String>();
-        Set<String> set2 = new HashSet<String>();
+        Set<String> beginSet = new HashSet<String>();
+        Set<String> endSet = new HashSet<String>();
 
         // initial words in both ends
-        set1.add(start);
-        set2.add(end);
+        beginSet.add(start);
+        endSet.add(end);
 
         // we use a map to help construct the final result
         Map<String, List<String>> pathMap = new HashMap<String, List<String>>();
 
         // build the map
-        helper(dict, set1, set2, pathMap, false);
+        helper(dict, beginSet, endSet, pathMap, false);
 
-        List<List<String>> res = new ArrayList<List<String>>();
+
         List<String> path = new ArrayList<String>(Arrays.asList(start));
-
+        System.out.println(pathMap);
         // recursively build the final result
         generateList(start, end, pathMap, path, res);
 
@@ -55,7 +57,7 @@ public class Solution {
         boolean done = false;
 
         // set for the next level
-        Set<String> set = new HashSet<String>();
+        Set<String> nextSet = new HashSet<String>();
 
         // for each string in end 1
         for (String str : beginSet) {
@@ -82,7 +84,7 @@ public class Solution {
                     }
 
                     if (!done && dict.contains(word)) {
-                        set.add(word);
+                        nextSet.add(word);
 
                         list.add(val);
                         pathMap.put(key, list);
@@ -92,7 +94,7 @@ public class Solution {
         }
 
         // early terminate if done is true
-        return done || helper(dict, endSet, set, pathMap, !flip);
+        return done || helper(dict, endSet, nextSet, pathMap, !flip);
     }
 
     void generateList(String start, String end, Map<String, List<String>> pathMap, List<String> path, List<List<String>> res) {
