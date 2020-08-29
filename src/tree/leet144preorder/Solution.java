@@ -1,6 +1,6 @@
-package Tree.leet144preorder;
+package tree.leet144preorder;
 
-import Tree.TreeNode;
+import tree.TreeNode;
 
 import java.util.LinkedList;
 import java.util.List;

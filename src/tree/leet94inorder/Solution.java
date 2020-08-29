@@ -1,7 +1,7 @@
-package Tree.leet94inorder;
+package tree.leet94inorder;
 
 
-import Tree.TreeNode;
+import tree.TreeNode;
 
 import java.util.ArrayList;
 import java.util.List;
