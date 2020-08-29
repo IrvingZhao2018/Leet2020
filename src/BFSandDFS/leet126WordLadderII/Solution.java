@@ -23,32 +23,32 @@ public class Solution {
         set2.add(end);
 
         // we use a map to help construct the final result
-        Map<String, List<String>> map = new HashMap<String, List<String>>();
+        Map<String, List<String>> pathMap = new HashMap<String, List<String>>();
 
         // build the map
-        helper(dict, set1, set2, map, false);
+        helper(dict, set1, set2, pathMap, false);
 
         List<List<String>> res = new ArrayList<List<String>>();
-        List<String> sol = new ArrayList<String>(Arrays.asList(start));
+        List<String> path = new ArrayList<String>(Arrays.asList(start));
 
         // recursively build the final result
-        generateList(start, end, map, sol, res);
+        generateList(start, end, pathMap, path, res);
 
         return res;
     }
 
-    boolean helper(Set<String> dict, Set<String> set1, Set<String> set2, Map<String, List<String>> map, boolean flip) {
-        if (set1.isEmpty()) {
+    boolean helper(Set<String> dict, Set<String> beginSet, Set<String> endSet, Map<String, List<String>> pathMap, boolean flip) {
+        if (beginSet.isEmpty()) {
             return false;
         }
 
-        if (set1.size() > set2.size()) {
-            return helper(dict, set2, set1, map, !flip);
+        if (beginSet.size() > endSet.size()) {
+            return helper(dict, endSet, beginSet, pathMap, !flip);
         }
 
         // remove words on current both ends from the dict
-        dict.removeAll(set1);
-        dict.removeAll(set2);
+        dict.removeAll(beginSet);
+        dict.removeAll(endSet);
 
         // as we only need the shortest paths
         // we use a boolean value help early termination
@@ -58,7 +58,7 @@ public class Solution {
         Set<String> set = new HashSet<String>();
 
         // for each string in end 1
-        for (String str : set1) {
+        for (String str : beginSet) {
             for (int i = 0; i < str.length(); i++) {
                 char[] chars = str.toCharArray();
 
@@ -72,45 +72,45 @@ public class Solution {
                     String key = flip ? word : str;
                     String val = flip ? str : word;
 
-                    List<String> list = map.containsKey(key) ? map.get(key) : new ArrayList<String>();
+                    List<String> list = pathMap.containsKey(key) ? pathMap.get(key) : new ArrayList<String>();
 
-                    if (set2.contains(word)) {
+                    if (endSet.contains(word)) {
                         done = true;
 
                         list.add(val);
-                        map.put(key, list);
+                        pathMap.put(key, list);
                     }
 
                     if (!done && dict.contains(word)) {
                         set.add(word);
 
                         list.add(val);
-                        map.put(key, list);
+                        pathMap.put(key, list);
                     }
                 }
             }
         }
 
         // early terminate if done is true
-        return done || helper(dict, set2, set, map, !flip);
+        return done || helper(dict, endSet, set, pathMap, !flip);
     }
 
-    void generateList(String start, String end, Map<String, List<String>> map, List<String> sol, List<List<String>> res) {
+    void generateList(String start, String end, Map<String, List<String>> pathMap, List<String> path, List<List<String>> res) {
         if (start.equals(end)) {
-            res.add(new ArrayList<String>(sol));
+            res.add(new ArrayList<String>(path));
             return;
         }
 
         // need this check in case the diff between start and end happens to be one
         // e.g "a", "c", {"a", "b", "c"}
-        if (!map.containsKey(start)) {
+        if (!pathMap.containsKey(start)) {
             return;
         }
 
-        for (String word : map.get(start)) {
-            sol.add(word);
-            generateList(word, end, map, sol, res);
-            sol.remove(sol.size() - 1);
+        for (String word : pathMap.get(start)) {
+            path.add(word);
+            generateList(word, end, pathMap, path, res);
+            path.remove(path.size() - 1);
         }
     }
 }
