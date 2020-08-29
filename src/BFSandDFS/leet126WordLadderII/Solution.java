@@ -28,11 +28,11 @@ public class Solution {
         Map<String, List<String>> pathMap = new HashMap<String, List<String>>();
 
         // build the map
-        helper(dict, beginSet, endSet, pathMap, false);
-
+        boolean done = helper(dict, beginSet, endSet, pathMap, false);
+        if(!done) return res;
 
         List<String> path = new ArrayList<String>(Arrays.asList(start));
-        System.out.println(pathMap);
+        //System.out.println(pathMap);
         // recursively build the final result
         generateList(start, end, pathMap, path, res);
 
