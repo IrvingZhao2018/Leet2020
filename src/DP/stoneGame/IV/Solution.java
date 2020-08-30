@@ -5,6 +5,7 @@ import java.util.Map;
 
 class Solution {
     Map<Integer, Boolean> memo = new HashMap<>();
+    boolean[] dp;
     public boolean winnerSquareGame(int n) {
         if(memo.get(n) != null) return memo.get(n);
         int sqrtn = (int)Math.sqrt(n);
@@ -22,9 +23,24 @@ class Solution {
         return false;
     }
 
+    public boolean winnerSquareGame2(int n) {
+        dp = new boolean[n + 1];
+        for(int i = 1; i <= n; i++){
+            for(int k = 1; i - k * k >= 0; k++){
+                if(!dp[i - k * k]){
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+        return dp[n];
+    }
+
+
     public static void main(String[] args) {
         Solution solution = new Solution();
-        System.out.println(solution.winnerSquareGame(17));
+        System.out.println(solution.winnerSquareGame2(4));
+        for(boolean flag : solution.dp) System.out.println(flag);
         System.out.println(solution.memo);
     }
 }
