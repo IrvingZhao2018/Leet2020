@@ -6,13 +6,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Solution {
+    // prefix table
     public boolean repeatedSubstringPatternKMP(String s) {
         int n = s.length();
         int[] dp = new int[n];
-        for(int i = 1; i < n; i++){
+        for (int i = 1; i < n; i++) {
             int j = dp[i - 1];
-            while(j > 0 && s.charAt(i) != s.charAt(j)) j = dp[j - 1];
-            if(s.charAt(i) == s.charAt(j)) j++;
+            while (j > 0 && s.charAt(i) != s.charAt(j)) j = dp[j - 1];
+            if (s.charAt(i) == s.charAt(j)) j++;
             dp[i] = j;
         }
         int period = n - dp[n - 1];
@@ -21,7 +22,7 @@ public class Solution {
 
     public boolean repeatedSubstringPatternRegex(String s) {
         Pattern pat = Pattern.compile("^(.+)\\1+$");
-         Matcher match = pat.matcher(s);
+        Matcher match = pat.matcher(s);
 //         while(match.find()){
 //             System.out.println(s.substring(match.start(), match.end()));
 //         }
@@ -37,7 +38,7 @@ public class Solution {
         if (n < 2) return false;
         if (n == 2) return s.charAt(0) == s.charAt(1);
 
-        for (int i = (int)Math.sqrt(n); i > 0; i--) {
+        for (int i = (int) Math.sqrt(n); i > 0; i--) {
             if (n % i == 0) {
                 List<Integer> divisors = new ArrayList<>();
                 divisors.add(i);
