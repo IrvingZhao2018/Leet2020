@@ -30,7 +30,7 @@ class Solution {
                 }
                 char delete = s.charAt(start);
                 if (counter.containsKey(delete)) {
-                    if (counter.get(delete) == 0) len++; // invaid
+                    if (counter.get(delete) == 0) len++; // invalid
                     counter.put(delete, counter.get(delete) + 1);
                 }
                 start++;
