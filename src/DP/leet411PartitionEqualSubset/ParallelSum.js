@@ -1,7 +1,7 @@
 const canPartition = function (nums) {
     const sum = nums.reduce((acc, val) => acc + val, 0);
     if (sum % 2) // odd
-        return false;
+        return -1;
     const target = sum / 2;
     const dp = new Array(target + 1);
     dp[0] = [0]; // base case
@@ -19,6 +19,7 @@ const canPartition = function (nums) {
     }
     if (!dp[target]) return -1; // no solution
     const res = dp[target].splice(1, dp[target].length); // remove 0
+    const res2 = [];
     //console.log(dp);
     //console.log(counter);
     //console.log(res);
@@ -28,12 +29,13 @@ const canPartition = function (nums) {
     }
     for(let pair of counter){
         while(pair[1] > 0){
-            res.push(pair[0]);
+            res2.push(pair[0]);
             pair[1]--;
         }
         // console.log(res);
     }
-    return res;
+    if(res[0] < res2[0]) return [...res, ...res2].toString();
+    return [...res2, ...res].toString();
 };
 
 const test = [1, 5, 11, 5];
